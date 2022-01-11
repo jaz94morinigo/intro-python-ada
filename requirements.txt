@@ -1,2 +1,6 @@
 Flask
 ipdb
+datetime
+sqlalchemy
+Flask-Sqlalchemy
+python_weather
