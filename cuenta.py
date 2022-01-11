@@ -1,7 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 # author: Jazmin
+
 import datetime
+import proceso_cuentas
 
 
 class Cuenta(object):
@@ -12,31 +14,45 @@ class Cuenta(object):
         self.movimientos = []
         self.activa = True
 
-    def aplicar_gasto(self, monto):  # retirar
-        # TODO: Chequear si la cuenta está activa
-        self.cantidad = self.cantidad - monto
-        self.crear_movimiento("Estamos aplicando un gasto", monto)
+    def aplicar_gasto(self, monto_gasto):  # retirar
+        if self.activa:
+            try:
+                self.cantidad = self.cantidad - monto_gasto
+                self.crear_movimiento("Estamos aplicando un gasto", monto_gasto)
+                self.movimientos = proceso_cuentas.procesar_gastos()
+                return self.movimientos
+            except Exception as error:
+                print(error)
+                return f"Saldo insuficiente para realizar transacción"
 
-    def aplicar_deposito(self, monto):  # ingresar
-        # TODO: Chequear si la cuenta está activa
-        self.cantidad = self.cantidad + monto
-        self.crear_movimiento("Estamos aplicando un deposito", monto)
+    def aplicar_deposito(self, monto_deposito):  # ingresar
+        if self.activa:
+            try:
+                self.cantidad = self.cantidad + monto_deposito
+                self.crear_movimiento("Estamos aplicando un deposito", monto_deposito)
+                self.movimientos = proceso_cuentas.procesar_depositos()
+                return self.movimientos
+            except Exception as error:
+                print(error)
+                estado = self.desactivar(0)
+                return estado
 
-    def desactivar(self):
-        # TODO: Solo si el saldo es cero
-        self.activa = False
+    def desactivar(self, cantidad):
+        if cantidad == 0:
+            self.activa = False
+        return f"Cuenta desactivada por saldo insuficiente"
 
-    def activar(self):
-        # TODO: Solo si el saldo es cero
-        self.activa = True
+    def activar(self, cantidad):
+        if cantidad > 0:
+            self.activa = True
+        return f"Cuenta Activa"
 
     def crear_movimiento(self, descripcion, monto):
         movimiento = MovimientoCuenta(descripcion, monto)
         self.movimientos.append(movimiento)
 
     def __str__(self):
-        # TODO: Completar para que quede mejor con nro de cuenta
-        print(f"CUENTA comun {self.cantidad}")
+        return f"Tipo de cuenta: CUENTA COMÚN - Saldo: $ {self.cantidad}"
 
 
 class CuentaJoven(Cuenta):
@@ -46,8 +62,7 @@ class CuentaJoven(Cuenta):
         self.bonificacion = bonificacion
 
     def __str__(self):
-        # TODO: Completar para que quede mejor
-        print(f"CUENTA JOVEN {self.cantidad}")
+        return f"Tipo de cuenta: CUENTA JOVEN - Saldo: $ {self.cantidad}"
 
 
 class MovimientoCuenta(object):
@@ -58,5 +73,10 @@ class MovimientoCuenta(object):
         self.monto = monto_del_movimiento
 
     def __str__(self):
-        # TODO: Completar como pide el ejercicio 3)
-        return f"{self.fecha_y_hora} {self.descripcion} {self.monto}"
+        if proceso_cuentas.procesar_gastos():
+            self.descripcion = "Gasto"
+        if proceso_cuentas.procesar_depositos():
+            self.descripcion = "Depósito en cuenta"
+        if proceso_cuentas.procesar_transferencias():
+            self.descripcion = "Transferencia"
+        return f"{self.fecha_y_hora} - {self.descripcion} por el monto de ${self.monto}"
