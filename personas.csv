@@ -1,8 +1,7 @@
-nombre,dni,fecha_nacimiento
-María de las Mercedes Iervasi,32109876,1986-07-03
-Juan Manuel Perez,42109876,1996-09-03
-Jose Martinez Garcia,12109876,1956-07-15
-Bautista Rodriguez,52109876,2003-11-28
-Simon Mendez,59109876,2004-01-28
-Martin Martinez,11111876,1986-07-03
-Ines Monti,111876,1906-12-12
+nombre, dni, fecha_nacimiento, ciudad
+MERI IERVASI,1000123,2000-03-24,Bariloche
+ANA VACIA,1000124,1994-02-13,Corrientes
+PEDRO LOPEZ,1000125,1999-07-08,La Plata
+LEO MENDEZ,1000126,1987-06-14,Salta
+AGUSTIN REY,1000127,1992-02-01,Buenos Aires
+AMELIA MENDEZ,1000128,2001-07-05,Córdoba
