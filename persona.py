@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# author: Jazmin
+# author: Jaz
 
 
 from sqlalchemy import DateTime, Integer, String, Column
